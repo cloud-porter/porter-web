@@ -13,6 +13,10 @@ import {
   Plus,
   RefreshCw
 } from "lucide-react";
+import TransferTrendChart from "@/components/dashboard/TransferTrendChart";
+import FileTypeChart from "@/components/dashboard/FileTypeChart";
+import DataVolumeChart from "@/components/dashboard/DataVolumeChart";
+import SystemPerformanceChart from "@/components/dashboard/SystemPerformanceChart";
 
 const Dashboard = () => {
   // 模擬數據
@@ -126,6 +130,14 @@ const Dashboard = () => {
             </Card>
           );
         })}
+      </div>
+
+      {/* 圖表區域 */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <TransferTrendChart />
+        <DataVolumeChart />
+        <FileTypeChart />
+        <SystemPerformanceChart />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
