@@ -23,7 +23,7 @@ const Schedules = () => {
   const schedules = [
     {
       id: 1,
-      name: "ocp-cp-rms-01",
+      name: "ccc-op-por-01",
       description: "ODS每日排程至 S3",
       source: "/nas/data/",
       target: "s3://ocpcprms01-prod-ods/data/",
@@ -37,7 +37,7 @@ const Schedules = () => {
     },
     {
       id: 2,
-      name: "ocp-cp-rms-02",
+      name: "ccc-op-por-02",
       description: "每小時日誌檔案歸檔",
       source: "/var/log/application/",
       target: "s3://ocpcprms02-prod-log/archive/",
@@ -51,7 +51,7 @@ const Schedules = () => {
     },
     {
       id: 3,
-      name: "ocp-cp-rms-03",
+      name: "ccc-op-por-03",
       description: "每週檔案同步",
       source: "/sync/uploads/",
       target: "s3://ocpcprms03-prod-sync/uploads/",

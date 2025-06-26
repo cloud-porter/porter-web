@@ -23,7 +23,7 @@ const TransferHistory = () => {
   const transferRecords = [
     {
       id: 1,
-      name: "ocp-cp-rms-01",
+      name: "ccc-op-por-01",
       description: "ODS每日排程至 S3",
       source: "/nas/data/",
       target: "s3://ocpcprms01-prod-ods/data/",
@@ -51,7 +51,7 @@ const TransferHistory = () => {
     },
     {
       id: 2,
-      name: "ocp-cp-rms-02",
+      name: "ccc-op-por-02",
       description: "每小時日誌檔案歸檔",
       source: "/var/log/application/",
       target: "s3://ocpcprms02-prod-log/archive/",
@@ -79,7 +79,7 @@ const TransferHistory = () => {
     },
     {
       id: 3,
-      name: "ocp-cp-rms-03",
+      name: "ccc-op-por-03",
       description: "每週檔案同步",
       source: "/sync/uploads/",
       target: "s3://ocpcprms03-prod-sync/uploads/",
@@ -107,7 +107,7 @@ const TransferHistory = () => {
     },
     {
       id: 4,
-      name: "ocp-cp-rms-04",
+      name: "ccc-op-por-04",
       description: "手動備份個人資料",
       source: "/home/user/documents/",
       target: "s3://personal-bucket/backup/2024-06-24/",
