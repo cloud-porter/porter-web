@@ -56,7 +56,7 @@ const Login = ({ onLogin }: LoginProps) => {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="your.email@cloudporter.com"
+                  placeholder="relax@cloudporter.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required

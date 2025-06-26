@@ -1,32 +1,50 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer } from "recharts";
 import { Activity } from "lucide-react";
+import { RadialBarChart, RadialBar, PolarAngleAxis, ResponsiveContainer } from "recharts";
+import { useState, useEffect } from "react";
+
+
+const Gauge = ({ value, color }: { value: number; color: string }) => (
+  <ResponsiveContainer width="100%" height={120}>
+    <RadialBarChart
+      cx="50%"
+      cy="100%"
+      innerRadius="70%"
+      outerRadius="100%"
+      barSize={18}
+      data={[{ value }]}
+      startAngle={180}
+      endAngle={0}
+    >
+      <PolarAngleAxis type="number" domain={[0, 100]} tick={false} />
+      <RadialBar
+        background
+        dataKey="value"
+        cornerRadius={10}
+        fill={color}
+      />
+    </RadialBarChart>
+  </ResponsiveContainer>
+);
 
 const SystemPerformanceChart = () => {
-  const data = [
-    { time: "10:00", cpu: 45, memory: 62, network: 38 },
-    { time: "12:00", cpu: 52, memory: 68, network: 45 },
-    { time: "14:00", cpu: 38, memory: 55, network: 52 },
-    { time: "16:00", cpu: 68, memory: 75, network: 68 },
-    { time: "18:00", cpu: 42, memory: 58, network: 35 },
-    { time: "20:00", cpu: 35, memory: 48, network: 28 },
-  ];
+  const [memory, setMemory] = useState(66);
+  const [disk, setDisk] = useState(49);
+  const [cpu, setCpu] = useState(58);
 
-  const chartConfig = {
-    cpu: {
-      label: "CPU 使用率",
-      color: "#059669",
-    },
-    memory: {
-      label: "記憶體使用率",
-      color: "#3b82f6",
-    },
-    network: {
-      label: "網路使用率",
-      color: "#8b5cf6",
-    },
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMemory(Math.floor(40 + Math.random() * 60)); // 40~100
+      // setDisk(Math.floor(30 + Math.random() * 60));   // 30~90
+      setCpu(Math.floor(30 + Math.random() * 70));    // 30~100
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const getGaugeColor = (value: number) => {
+    if (value <= 50) return "#34d399"; // 綠色
+    if (value <= 80) return "#fbbf24"; // 黃色
+    return "#f87171"; // 紅色
   };
 
   return (
@@ -41,47 +59,26 @@ const SystemPerformanceChart = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="h-64">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={data}>
-              <XAxis 
-                dataKey="time" 
-                stroke="#059669"
-                fontSize={12}
-              />
-              <YAxis 
-                stroke="#059669"
-                fontSize={12}
-                domain={[0, 100]}
-              />
-              <ChartTooltip content={<ChartTooltipContent />} />
-              <Area
-                type="monotone"
-                dataKey="cpu"
-                stackId="1"
-                stroke="#059669"
-                fill="#059669"
-                fillOpacity={0.6}
-              />
-              <Area
-                type="monotone"
-                dataKey="memory"
-                stackId="1"
-                stroke="#3b82f6"
-                fill="#3b82f6"
-                fillOpacity={0.6}
-              />
-              <Area
-                type="monotone"
-                dataKey="network"
-                stackId="1"
-                stroke="#8b5cf6"
-                fill="#8b5cf6"
-                fillOpacity={0.6}
-              />
-            </AreaChart>
-          </ResponsiveContainer>
-        </ChartContainer>
+        <div className="flex flex-row items-end justify-center gap-16 w-full">
+          {/* Memory Gauge */}
+          <div className="flex flex-col items-center scale-125">
+            <Gauge value={memory} color={getGaugeColor(memory)} />
+            <div className="text-2xl font-bold text-gray-700 -mt-4">{memory} %</div>
+            <div className="text-base text-gray-500 text-center">Memory Utilization</div>
+          </div>
+          {/* Disk Gauge */}
+          <div className="flex flex-col items-center scale-125">
+            <Gauge value={disk} color={getGaugeColor(disk)} />
+            <div className="text-2xl font-bold text-gray-700 -mt-4">{disk} %</div>
+            <div className="text-base text-gray-500 text-center">Disk Utilization</div>
+          </div>
+          {/* CPU Gauge */}
+          <div className="flex flex-col items-center scale-125">
+            <Gauge value={cpu} color={getGaugeColor(cpu)} />
+            <div className="text-2xl font-bold text-gray-700 -mt-4">{cpu} %</div>
+            <div className="text-base text-gray-500 text-center">CPU Utilization</div>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );
