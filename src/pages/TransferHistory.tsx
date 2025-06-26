@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -20,21 +19,29 @@ const TransferHistory = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedRecord, setExpandedRecord] = useState<number | null>(null);
 
-  // 模擬傳輸紀錄數據
+  // 模擬傳輸紀錄數據（與 Schedules.tsx 結構同步）
   const transferRecords = [
     {
       id: 1,
-      taskName: "Daily-Database-Backup",
+      name: "ocp-cp-rms-01",
+      description: "ODS每日排程至 S3",
+      source: "/nas/data/",
+      target: "s3://ocpcprms01-prod-ods/data/",
+      schedule: "0 2 * * *",
+      scheduleText: "每日 02:00",
+      enabled: true,
+      lastRun: "2024-06-25 02:00:00",
+      lastRunStatus: "success",
+      nextRun: "2024-06-26 02:00:00",
+      filesCount: 1247,
+      status: "success",
       startTime: "2024-06-25 02:00:00",
       endTime: "2024-06-25 02:15:32",
       duration: "15分32秒",
-      status: "success",
       sourceFiles: 1247,
       transferredFiles: 1247,
       failedFiles: 0,
       totalSize: "2.3 GB",
-      sourcePath: "/data/database/",
-      targetPath: "s3://backup-bucket/database/2024-06-25/",
       errorMessage: null,
       details: [
         { file: "users.sql", size: "145 MB", status: "success" },
@@ -44,17 +51,25 @@ const TransferHistory = () => {
     },
     {
       id: 2,
-      taskName: "Hourly-Log-Archive",
+      name: "ocp-cp-rms-02",
+      description: "每小時日誌檔案歸檔",
+      source: "/var/log/application/",
+      target: "s3://ocpcprms02-prod-log/archive/",
+      schedule: "0 * * * *",
+      scheduleText: "每小時",
+      enabled: true,
+      lastRun: "2024-06-25 14:00:00",
+      lastRunStatus: "success",
+      nextRun: "2024-06-25 15:00:00",
+      filesCount: 89,
+      status: "success",
       startTime: "2024-06-25 14:00:00",
       endTime: "2024-06-25 14:03:45",
       duration: "3分45秒",
-      status: "success",
       sourceFiles: 89,
       transferredFiles: 89,
       failedFiles: 0,
       totalSize: "156 MB",
-      sourcePath: "/var/log/application/",
-      targetPath: "s3://logs-bucket/archive/2024-06-25-14/",
       errorMessage: null,
       details: [
         { file: "app.log", size: "89 MB", status: "success" },
@@ -64,17 +79,25 @@ const TransferHistory = () => {
     },
     {
       id: 3,
-      taskName: "Weekly-Media-Sync",
+      name: "ocp-cp-rms-03",
+      description: "每週檔案同步",
+      source: "/sync/uploads/",
+      target: "s3://ocpcprms03-prod-sync/uploads/",
+      schedule: "0 0 * * 0",
+      scheduleText: "每週日 00:00",
+      enabled: false,
+      lastRun: "2024-06-23 00:00:00",
+      lastRunStatus: "failed",
+      nextRun: "2024-06-30 00:00:00",
+      filesCount: 0,
+      status: "failed",
       startTime: "2024-06-23 00:00:00",
       endTime: "2024-06-23 00:45:12",
       duration: "45分12秒",
-      status: "failed",
       sourceFiles: 1456,
       transferredFiles: 1234,
       failedFiles: 222,
       totalSize: "8.7 GB",
-      sourcePath: "/media/uploads/",
-      targetPath: "s3://media-bucket/uploads/2024-06-23/",
       errorMessage: "部分檔案因權限問題無法讀取",
       details: [
         { file: "image001.jpg", size: "2.3 MB", status: "success" },
@@ -84,17 +107,25 @@ const TransferHistory = () => {
     },
     {
       id: 4,
-      taskName: "Manual-Backup-User-Data",
+      name: "ocp-cp-rms-04",
+      description: "手動備份個人資料",
+      source: "/home/user/documents/",
+      target: "s3://personal-bucket/backup/2024-06-24/",
+      schedule: "manual",
+      scheduleText: "手動",
+      enabled: true,
+      lastRun: "2024-06-24 16:30:00",
+      lastRunStatus: "success",
+      nextRun: "-",
+      filesCount: 45,
+      status: "success",
       startTime: "2024-06-24 16:30:00",
       endTime: "2024-06-24 16:32:18",
       duration: "2分18秒",
-      status: "success",
       sourceFiles: 45,
       transferredFiles: 45,
       failedFiles: 0,
       totalSize: "67 MB",
-      sourcePath: "/home/user/documents/",
-      targetPath: "s3://personal-bucket/backup/2024-06-24/",
       errorMessage: null,
       details: [
         { file: "report.docx", size: "12 MB", status: "success" },
@@ -105,9 +136,9 @@ const TransferHistory = () => {
   ];
 
   const filteredRecords = transferRecords.filter(record =>
-    record.taskName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    record.sourcePath.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    record.targetPath.toLowerCase().includes(searchTerm.toLowerCase())
+    record.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    record.source.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    record.target.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const getStatusBadge = (status: string) => {
@@ -201,7 +232,7 @@ const TransferHistory = () => {
                     )}
                   </Button>
                   <div>
-                    <CardTitle className="text-lg text-slate-800">{record.taskName}</CardTitle>
+                    <CardTitle className="text-lg text-slate-800">{record.name}</CardTitle>
                     <CardDescription className="text-slate-600">
                       {record.startTime} - {record.endTime} ({record.duration})
                     </CardDescription>
@@ -242,13 +273,13 @@ const TransferHistory = () => {
                 <div className="space-y-1">
                   <p className="text-xs font-medium text-slate-600">來源路徑</p>
                   <p className="text-sm text-slate-800 font-mono bg-slate-100 px-2 py-1 rounded border border-slate-200">
-                    {record.sourcePath}
+                    {record.source}
                   </p>
                 </div>
                 <div className="space-y-1">
                   <p className="text-xs font-medium text-slate-600">目標路徑</p>
                   <p className="text-sm text-slate-800 font-mono bg-slate-100 px-2 py-1 rounded border border-slate-200">
-                    {record.targetPath}
+                    {record.target}
                   </p>
                 </div>
               </div>

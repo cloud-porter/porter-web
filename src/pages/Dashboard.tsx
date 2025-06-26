@@ -1,4 +1,4 @@
-
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -17,6 +17,7 @@ import TransferTrendChart from "@/components/dashboard/TransferTrendChart";
 import FileTypeChart from "@/components/dashboard/FileTypeChart";
 import DataVolumeChart from "@/components/dashboard/DataVolumeChart";
 import SystemPerformanceChart from "@/components/dashboard/SystemPerformanceChart";
+import AddScheduleDialog from "@/components/dashboard/AddScheduleDialog";
 
 const Dashboard = () => {
   // 模擬數據
@@ -24,28 +25,28 @@ const Dashboard = () => {
     {
       title: "今日成功傳輸",
       value: "1,247",
-      change: "+12%",
+      // change: "+12%",
       icon: CheckCircle,
       color: "text-emerald-600"
     },
     {
       title: "傳輸失敗",
       value: "23",
-      change: "-5%",
+      // change: "-5%",
       icon: XCircle,
       color: "text-red-500"
     },
     {
       title: "進行中任務",
       value: "8",
-      change: "即時",
+      // change: "即時",
       icon: Clock,
       color: "text-blue-500"
     },
     {
       title: "排程任務",
       value: "45",
-      change: "活躍中",
+      // change: "活躍中",
       icon: Calendar,
       color: "text-purple-500"
     }
@@ -89,6 +90,16 @@ const Dashboard = () => {
     { id: 4, name: "Media-Sync", nextRun: "明天 12:00", enabled: true }
   ];
 
+  const scheduleDefault = {
+    name: "",
+    description: "",
+    source: "",
+    target: "",
+    schedule: "",
+    scheduleText: "",
+    enabled: true,
+  };
+
   return (
     <div className="p-6 space-y-6">
       {/* 頁面標題 */}
@@ -98,14 +109,14 @@ const Dashboard = () => {
           <p className="text-emerald-700">監控您的雲端傳輸狀態與排程任務</p>
         </div>
         <div className="flex gap-3">
-          <Button variant="outline" className="text-emerald-700 border-emerald-200 hover:bg-emerald-50">
+          <Button variant="outline" className="bg-emerald-600 hover:bg-emerald-700 text-white">
             <RefreshCw className="h-4 w-4 mr-2" />
             重新整理
           </Button>
-          <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+          {/* <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
             <Plus className="h-4 w-4 mr-2" />
             新增任務
-          </Button>
+          </Button> */}
         </div>
       </div>
 
@@ -229,15 +240,8 @@ const Dashboard = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Button className="h-20 bg-emerald-100 hover:bg-emerald-200 border border-emerald-200 flex flex-col gap-2 text-emerald-800 hover:text-emerald-900">
-              <CloudUpload className="h-6 w-6" />
-              <span>手動補傳</span>
-            </Button>
-            <Button className="h-20 bg-green-100 hover:bg-green-200 border border-green-200 flex flex-col gap-2 text-green-800 hover:text-green-900">
-              <Plus className="h-6 w-6" />
-              <span>新增排程</span>
-            </Button>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <AddScheduleDialog />
             <Button className="h-20 bg-teal-100 hover:bg-teal-200 border border-teal-200 flex flex-col gap-2 text-teal-800 hover:text-teal-900">
               <History className="h-6 w-6" />
               <span>查詢紀錄</span>

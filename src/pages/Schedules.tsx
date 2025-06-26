@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,6 +14,7 @@ import {
   Filter,
   MoreHorizontal
 } from "lucide-react";
+import AddScheduleDialog from "@/components/dashboard/AddScheduleDialog";
 
 const Schedules = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,10 +23,10 @@ const Schedules = () => {
   const schedules = [
     {
       id: 1,
-      name: "Daily-Database-Backup",
-      description: "每日資料庫備份至 S3",
-      source: "/data/database/",
-      target: "s3://backup-bucket/database/",
+      name: "ocp-cp-rms-01",
+      description: "ODS每日排程至 S3",
+      source: "/nas/data/",
+      target: "s3://ocpcprms01-prod-ods/data/",
       schedule: "0 2 * * *",
       scheduleText: "每日 02:00",
       enabled: true,
@@ -37,10 +37,10 @@ const Schedules = () => {
     },
     {
       id: 2,
-      name: "Hourly-Log-Archive",
+      name: "ocp-cp-rms-02",
       description: "每小時日誌檔案歸檔",
       source: "/var/log/application/",
-      target: "s3://logs-bucket/archive/",
+      target: "s3://ocpcprms02-prod-log/archive/",
       schedule: "0 * * * *",
       scheduleText: "每小時",
       enabled: true,
@@ -51,10 +51,10 @@ const Schedules = () => {
     },
     {
       id: 3,
-      name: "Weekly-Media-Sync",
-      description: "每週媒體檔案同步",
-      source: "/media/uploads/",
-      target: "s3://media-bucket/uploads/",
+      name: "ocp-cp-rms-03",
+      description: "每週檔案同步",
+      source: "/sync/uploads/",
+      target: "s3://ocpcprms03-prod-sync/uploads/",
       schedule: "0 0 * * 0",
       scheduleText: "每週日 00:00",
       enabled: false,
@@ -63,20 +63,20 @@ const Schedules = () => {
       nextRun: "2024-06-30 00:00:00",
       filesCount: 0
     },
-    {
-      id: 4,
-      name: "Monthly-Report-Archive",
-      description: "每月報表歸檔備份",
-      source: "/reports/monthly/",
-      target: "s3://reports-bucket/monthly/",
-      schedule: "0 0 1 * *",
-      scheduleText: "每月 1 日 00:00",
-      enabled: true,
-      lastRun: "2024-06-01 00:00:00",
-      lastRunStatus: "success",
-      nextRun: "2024-07-01 00:00:00",
-      filesCount: 34
-    }
+    // {
+    //   id: 4,
+    //   name: "Monthly-Report-Archive",
+    //   description: "每月報表歸檔備份",
+    //   source: "/reports/monthly/",
+    //   target: "s3://reports-bucket/monthly/",
+    //   schedule: "0 0 1 * *",
+    //   scheduleText: "每月 1 日 00:00",
+    //   enabled: true,
+    //   lastRun: "2024-06-01 00:00:00",
+    //   lastRunStatus: "success",
+    //   nextRun: "2024-07-01 00:00:00",
+    //   filesCount: 34
+    // }
   ];
 
   const filteredSchedules = schedules.filter(schedule =>
@@ -105,10 +105,12 @@ const Schedules = () => {
           <h1 className="text-3xl font-bold text-emerald-900 mb-2">傳輸排程管理</h1>
           <p className="text-emerald-700">建立、編輯和管理您的資料傳輸排程任務</p>
         </div>
-        <Button className="bg-emerald-700 hover:bg-emerald-800 text-white shadow-md">
-          <Plus className="h-4 w-4 mr-2" />
-          新增排程
-        </Button>
+        {/* <AddScheduleDialog /> */}
+        <AddScheduleDialog>
+          <span className="inline-block px-4 py-2 border border-emerald-300 rounded text-emerald-700 font-semibold bg-white hover:bg-emerald-50 cursor-pointer transition">
+            + 新增排程
+          </span>
+        </AddScheduleDialog>
       </div>
 
       {/* 搜尋與篩選 */}
@@ -250,10 +252,12 @@ const Schedules = () => {
             <Calendar className="h-12 w-12 text-emerald-400 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-emerald-900 mb-2">找不到符合的排程</h3>
             <p className="text-emerald-600 mb-6">請調整搜尋條件或建立新的排程任務</p>
-            <Button className="bg-emerald-700 hover:bg-emerald-800 text-white">
-              <Plus className="h-4 w-4 mr-2" />
-              新增排程
-            </Button>
+            {/* <AddScheduleDialog /> */}
+            <AddScheduleDialog>
+              <span className="inline-block px-4 py-2 border border-emerald-300 rounded text-emerald-700 font-semibold bg-white hover:bg-emerald-50 cursor-pointer transition">
+                + 新增排程
+              </span>
+            </AddScheduleDialog>
           </CardContent>
         </Card>
       )}
