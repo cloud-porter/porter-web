@@ -25,7 +25,7 @@ const Schedules = () => {
       id: 1,
       name: "ccc-op-por-01",
       description: "DataSync 排程至 S3",
-      source: "/home/ec2-user/efs/",
+      source: "efs://ap-northeast-1.fs-08d9c185bd6ca97ba/",
       target: "s3://porter-datasync/",
       schedule: "0 2 * * *",
       scheduleText: "每日 02:00",
