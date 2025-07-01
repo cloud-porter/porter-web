@@ -23,30 +23,30 @@ const TransferHistory = () => {
   const transferRecords = [
     {
       id: 1,
-      name: "ccc-op-por-01",
-      description: "ODS每日排程至 S3",
-      source: "/nas/data/",
-      target: "s3://ocpcprms01-prod-ods/data/",
+      name: "history",
+      description: "每日排程至 S3",
+      source: "efs://ap-northeast-1.fs-08d9c185bd6ca97ba/",
+      target: "s3://porter-datasync/",
       schedule: "0 2 * * *",
       scheduleText: "每日 02:00",
       enabled: true,
       lastRun: "2024-06-25 02:00:00",
       lastRunStatus: "success",
       nextRun: "2024-06-26 02:00:00",
-      filesCount: 1247,
+      filesCount: 3,
       status: "success",
       startTime: "2024-06-25 02:00:00",
       endTime: "2024-06-25 02:15:32",
       duration: "15分32秒",
-      sourceFiles: 1247,
-      transferredFiles: 1247,
+      sourceFiles: 3,
+      transferredFiles: 3,
       failedFiles: 0,
       totalSize: "2.3 GB",
       errorMessage: null,
       details: [
-        { file: "users.sql", size: "145 MB", status: "success" },
-        { file: "products.sql", size: "892 MB", status: "success" },
-        { file: "orders.sql", size: "1.2 GB", status: "success" }
+        { file: "test.txt", size: "145 MB", status: "success" },
+        { file: "file_0624.bin", size: "892 MB", status: "success" },
+        { file: "file_0624_1.bin", size: "1.2 GB", status: "success" }
       ]
     },
     {
